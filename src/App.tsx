@@ -3,6 +3,20 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import ImageCard from './components/ImageCard'
 
+type Image = {
+  id: number,
+  title: string,
+  likes: number,
+  image: string
+  comments: Comment[]
+}
+
+type Comment ={
+  id: number
+  content: ""
+  imageId: number
+}
+
 function App() {
 
   const [images, setImages] = useState([])
@@ -14,17 +28,17 @@ function App() {
   }, [])
 
 
-  function likeImages (image) {
+  function likeImages (image: Image) {
     fetch(`http://localhost:3005/images/${image.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({likes: image.like +1})
+      body: JSON.stringify({likes: image.likes +1})
     })
 
     let imagesCopy = JSON.parse(JSON.stringify(images))
-    let match = imagesCopy.find(target => target.id === image.id)
+    let match = imagesCopy.find((target:Image) => target.id === image.id)
     match.likes ++
     setImages(imagesCopy)
   }
@@ -59,7 +73,7 @@ function App() {
 
 
       <section className="image-container">
-        {images.map(image => (
+        {images.map((image:Image) => (
           <ImageCard key={image.id} image={image} likeImages={likeImages}/>
         ))}
 

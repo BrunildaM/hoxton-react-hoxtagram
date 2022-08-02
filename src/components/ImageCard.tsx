@@ -1,24 +1,37 @@
 import CommentForm from "./CommentForm"
 
-// type Image = {
-//     id: number,
-//     title: string,
-//     likes: number,
-//     image: string
-// }
+type Image = {
+    id: number,
+    title: string,
+    likes: number,
+    image: string
+    comments: Comment[]
+}
 
-function ImageCard(props: any) {
+type Props = {
+    image: Image
+    likeImages: (image: Image)=> void
+}
+
+type Comment ={
+    id: number
+    content: ""
+    imageId: number
+}
+
+function ImageCard({image, likeImages}: Props) {
     return (<article className="image-card">
-        <h2 className="title">{props.image.title}</h2>
-        <img src={props.image.image} className="image" />
+        <h2 className="title">{image.title}</h2>
+        <img src={image.image} className="image" />
         <div className="likes-section">
-            <span className="likes">{props.image.likes} likes</span>
-            <button className="like-button" onClick={() => {
-               props.likeImages ()
+            <span className="likes">{image.likes} likes</span>
+            <button className="like-button" 
+            onClick={() => {
+               likeImages (image)
             }}>♥</button>
         </div>
         <ul className="comments">
-            {props.image.comments.map(comment => (
+            {image.comments.map ((comment: Comment) => (
             <li key={comment.id}>{comment.content}</li>))}
         </ul>
 
